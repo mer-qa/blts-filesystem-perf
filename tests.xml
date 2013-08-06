@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testdefinition version="1.0">
+
+  <suite name="blts-filesystem-perf">
+
+    <set name="iozone">
+
+      <case name="plain-10k"
+        description="Benchmark with plain file I/O - 10kB files"
+        type="Performance">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-iozone.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -- -a -s 10k -r 4k
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="plain-1m"
+        description="Benchmark with plain file I/O - 1MB files"
+        type="Performance">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-iozone.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -- -a -s 1m -r 4k -r 128k
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="plain-100m"
+        description="Benchmark with plain file I/O - 100MB files"
+        type="Performance"
+        timeout="300">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-iozone.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -- -a -s 100m -r 128k -r 16384k
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="mmap-10k"
+        description="Benchmark with a mmap() file I/O - 10kB files"
+        type="Performance">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-iozone.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -- -a -B -s 10k -r 4k
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="mmap-1m"
+        description="Benchmark with a mmap() file I/O - 1MB files"
+        type="Performance">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-iozone.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -- -a -B -s 1m -r 4k -r 128k
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="mmap-100m"
+        description="Benchmark with a mmap() file I/O - 100MB files"
+        type="Performance"
+        timeout="300">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-iozone.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -- -a -B -s 100m -r 128k -r 16384k
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="sync"
+        description="Benchmark with O_SYNC flag active"
+        type="Performance">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-iozone.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -- -a -o -s 1m -r 4k -r 128k
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+    </set>
+
+    <set name="bonnie++">
+
+      <case name="create-10240"
+        description="Create 10240 empty files"
+        type="Performance">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-bonnie++.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -k seq_create \
+            -- -s 0 -n 10
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="create-10240-subdirs"
+        description="Create 10240 empty files each one in a subdirectory"
+        type="Performance">
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-bonnie++.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -k seq_create \
+            -- -s 0 -n 10:0:0:10
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+      <case name="create-read-1024-100MB"
+        description="Create and read 1024 100MB files"
+        type="Performance"
+        timeout="300">
+        <!-- It is important to choose file size big enough compared to RAM size -->
+        <step>
+          cd
+          /opt/tests/blts-filesystem-perf/run-bonnie++.sh \
+            -s /var/tmp/blts-filesystem-perf.csv -r /var/tmp/blts-filesystem-perf.log \
+            -k seq_output,seq_input \
+            -- -s 100m -n 1 -r 0
+        </step>
+        <get>
+          <file measurement="true">/var/tmp/blts-filesystem-perf.csv</file>
+          <file measurement="false">/var/tmp/blts-filesystem-perf.log</file>
+        </get>
+      </case>
+
+    </set>
+
+  </suite>
+
+</testdefinition>
