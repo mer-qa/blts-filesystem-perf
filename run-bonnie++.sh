@@ -17,7 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-which bonnie++ &>/dev/null || { echo "bonnie++ not installed" >&2; exit 1; }
+BONNIE_BIN="/usr/sbin/bonnie++"
+[[ -f ${BONNIE_BIN} ]] || { echo "bonnie++ not installed" >&2; exit 1; }
 
 print_help()
 {
