@@ -114,7 +114,7 @@ TIME_FILE="/tmp/run-bonnie++.time"
 trap "rm -f ${BONNIE_OUT_FILE} ${BONNIE_ERR_FILE} ${TIME_FILE}" EXIT INT TERM
 
 command time --portability --output=${TIME_FILE} \
-    bonnie++ -q >${BONNIE_OUT_FILE} 2>${BONNIE_ERR_FILE} "${@}" || exit
+    $BONNIE_BIN -q >${BONNIE_OUT_FILE} 2>${BONNIE_ERR_FILE} "${@}" || exit
 
 BONNIE_OUT="$(<${BONNIE_OUT_FILE})"
 for key in ${KEYS[*]}
