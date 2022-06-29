@@ -20,7 +20,6 @@ This package contains filesystem performance tests
 %build
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}/opt/tests/blts-filesystem-perf
 install --mode=755 run-bonnie++.sh %{buildroot}/opt/tests/blts-filesystem-perf
 install --mode=755 run-iozone.sh %{buildroot}/opt/tests/blts-filesystem-perf
